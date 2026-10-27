@@ -1,0 +1,750 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#000000">
+<title>Смета для DI·ZIO</title>
+<meta name="description" content="Брендинг и сайт для DI·ZIO: фиксированная цена, состав работ и дополнительные услуги. Студия Flower, flowerteam.ru">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Смета для DI·ZIO">
+<meta property="og:description" content="Брендинг и сайт для DI·ZIO: фиксированная цена, состав работ и дополнительные услуги. Студия Flower, flowerteam.ru">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 29 29'%3E%3Crect width='29' height='29' rx='6' fill='%23000'/%3E%3Cpath fill='%23FFBB00' d='M25.43 14.01l2.6 2.6h-9.69l-2.6-2.6h9.69zM9.69 11.42l2.6 2.6H2.6L0 11.42h9.69zM14.01 25.43l-2.59 2.6v-9.69l2.59-2.6v9.69zM16.61 9.69l-2.6 2.59V2.6L16.61 0v9.69zM20.24 12.28h-3.63l6.92-6.92h3.63l-6.92 6.92zM15.74 20.42v-3.81l6.92 6.92v3.63l-6.92-6.74zM5.36 4.67V1.04l6.92 6.93v3.45L5.36 4.67zM7.79 15.74h3.63l-6.78 6.93H1.04l6.75-6.93zM12.28 14.01l1.73-1.73 1.73 1.73-1.73 1.73-1.73-1.73z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+:root{
+  /* Layout: слайд-смета Flower. Конфигуратор слева, липкий итог справа, в конце итоговый слайд с жёлтыми карточками */
+  --bg:#000000;
+  --surface:#0b0b0b;
+  --surface-2:#1e1e1e;
+  --line:#252525;
+  --line-strong:#383838;
+  --fg:#ffffff;
+  --soft:#cfcfcf;
+  --muted:#8f8f8f;
+  --faint:#5e5e5e;
+  --accent:#ffbb00;
+  --accent-hover:#ffc933;
+  --accent-ink:#000000;
+  --accent-soft:rgba(255,187,0,.18);
+  --accent-tint:rgba(255,187,0,.07);
+  --font:"Manrope",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --r:10px;
+  color-scheme:dark;
+}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-weight:500;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+
+/* фон слайдов Flower: круг и диагонали */
+.bg{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.bg svg{position:absolute;inset:0;width:100%;height:100%}
+.bg line{stroke:var(--line);stroke-width:1}
+.bg-circle{position:absolute;top:50%;left:50%;height:100%;aspect-ratio:1;transform:translate(-50%,-50%);border:1px solid var(--line);border-radius:50%}
+
+.page{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 120px}
+@media (min-width:768px){.page{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
+@media (min-width:1024px){.page{padding-block:28px 64px}}
+
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.logo{display:inline-flex;align-items:center;gap:8px;font-size:21px;letter-spacing:-.05em;font-weight:500;line-height:1}
+.logo svg{width:22px;height:22px}
+.icons svg{display:block;height:28px;width:auto}
+
+.hero{display:grid;gap:20px;max-width:920px;padding-block:72px 48px}
+.hero-meta{color:var(--muted);font-size:14px;font-weight:600}
+h1{margin:0;font-weight:600;font-size:clamp(36px,6.2vw,76px);line-height:1.06;letter-spacing:-.025em;text-wrap:balance}
+.bracket{color:var(--accent);font-weight:600;font-size:clamp(16px,1.8vw,22px)}
+.bracket a,.contact-site{color:var(--accent);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px;transition:color .15s}
+.bracket a:hover,.contact-site:hover{color:var(--accent-hover)}
+.bracket a:focus-visible,.contact-site:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+.contact-site{justify-self:start;font-weight:600}
+.hero p{margin:0;max-width:60ch;color:var(--soft);font-size:18px}
+.hero .hero-rec{color:var(--muted);font-size:15px}
+.hero-rec b{color:var(--fg);font-weight:600}
+.rates{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.rate{display:inline-flex;align-items:baseline;gap:8px;padding:8px 16px;border:1px solid var(--line-strong);border-radius:999px;font-size:14px;color:var(--soft);background:var(--bg)}
+.rate b{color:var(--accent);font-weight:600;font-size:16px;font-variant-numeric:tabular-nums}
+.rates-note{font-size:14px;color:var(--muted);max-width:46ch}
+
+.layout{display:grid;gap:32px;align-items:start}
+@media (min-width:1024px){.layout{grid-template-columns:minmax(0,1fr) 360px;gap:40px}}
+.services{display:grid;gap:24px;min-width:0}
+
+.svc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:clamp(20px,3vw,32px);display:grid;gap:24px;min-width:0}
+.svc-head{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.svc-title{display:grid;gap:4px;min-width:0}
+.num{font-size:12px;color:var(--muted);font-weight:600}
+h2{margin:0;font-weight:600;font-size:clamp(28px,3.4vw,40px);letter-spacing:-.02em;line-height:1.1}
+.master{display:inline-flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;font-weight:600}
+.svc.is-off h2{color:var(--muted)}
+.svc-body{display:grid;gap:24px;min-width:0}
+.svc-lead{margin:0;color:var(--soft);max-width:62ch}
+.off-note{margin:0;color:var(--muted);font-size:14px}
+
+/* фиксированная цена услуги */
+.price-box{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:8px 20px;padding:20px 22px;border-radius:var(--r);background:var(--accent);color:var(--accent-ink)}
+.price-main{display:grid;gap:2px}
+.price-label{font-size:13px;font-weight:600;opacity:.62}
+.price-big{font-size:clamp(34px,4.2vw,48px);font-weight:600;letter-spacing:-.02em;line-height:1.05;font-variant-numeric:tabular-nums}
+.price-meta{font-size:14px;font-weight:600;opacity:.7}
+
+/* что входит */
+.incs{list-style:none;margin:0;padding:0}
+.inc{display:grid;grid-template-columns:32px minmax(0,1fr) auto;gap:4px 12px;padding-block:14px;border-top:1px solid var(--line)}
+.inc-idx{padding-top:3px;font-size:12px;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
+.inc-name{font-weight:600}
+.inc-why{margin:4px 0 0;font-size:14px;color:var(--muted);max-width:62ch}
+.inc-hours{padding-top:2px;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* shadcn: Collapsible с доп. услугами */
+.addons{display:grid;gap:12px;min-width:0}
+.addons-toggle{display:flex;align-items:center;gap:14px;width:100%;padding:14px 18px;border:1px dashed var(--line-strong);border-radius:var(--r);background:transparent;color:var(--fg);font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,background-color .15s}
+.addons-toggle:hover{border-color:var(--muted)}
+.addons-toggle[aria-expanded="true"]{border-style:solid;background:var(--surface-2)}
+.addons-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.addons-plus{display:grid;place-items:center;flex:none;width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--accent-ink)}
+.addons-plus svg{width:14px;height:14px;transition:transform .2s}
+.addons-toggle[aria-expanded="true"] .addons-plus svg{transform:rotate(45deg)}
+.addons-text{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px}
+.addons-label{font-weight:600;font-size:16px}
+.addons-hint{font-size:14px;color:var(--muted)}
+.addons-toggle.has-picked .addons-hint{color:var(--accent);font-weight:600}
+.addons-toggle>svg{flex:none;width:14px;height:14px;transition:transform .2s}
+.addons-toggle[aria-expanded="true"]>svg{transform:rotate(180deg)}
+.addons-picked{margin:0;font-size:14px;color:var(--soft)}
+.addons-body{display:grid;gap:20px;padding-top:4px}
+.xgroup .group-head{padding-bottom:2px}
+
+.group-head{display:flex;justify-content:space-between;align-items:baseline;gap:4px 12px;flex-wrap:wrap;padding-bottom:10px}
+.group-title{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.group-hint{font-size:13px;color:var(--muted)}
+
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;padding-block:16px;border-top:1px solid var(--line)}
+.row-click{cursor:pointer}
+.row-main{min-width:0}
+.row-head{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+.row-name{font-weight:600;font-size:16px;transition:color .2s}
+.chip{font-size:11px;font-weight:600;color:var(--muted);border:1px solid var(--line-strong);border-radius:999px;padding:2px 8px;white-space:nowrap;line-height:1.5}
+.chip-flag{color:var(--accent);border-color:rgba(255,187,0,.55)}
+.row-why{margin:4px 0 0;font-size:14px;color:var(--muted);max-width:62ch}
+.row-side{display:flex;flex-direction:column;align-items:flex-end;gap:10px;text-align:right}
+.row-cost{display:grid;justify-items:end;gap:1px}
+.row-price{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;transition:color .2s}
+.row-hours{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.row:not(.is-on) .row-name{color:#b5b5b5}
+.row:not(.is-on) .row-price{color:var(--muted);font-weight:500}
+
+/* shadcn: Switch */
+.switch{position:relative;flex:none;width:38px;height:22px;padding:0;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface-2);cursor:pointer;transition:background-color .15s,border-color .15s}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--fg);transition:transform .15s,background-color .15s}
+.switch[aria-checked="true"]{background:var(--accent);border-color:var(--accent)}
+.switch[aria-checked="true"]::after{transform:translateX(16px);background:var(--accent-ink)}
+.switch:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* счётчик для услуг, которые берут несколько раз */
+.step{display:inline-flex;align-items:center;border:1px solid var(--line-strong);border-radius:999px;transition:border-color .15s}
+.row.is-on .step{border-color:var(--accent)}
+.step-btn{width:32px;height:30px;padding:0;border:0;border-radius:999px;background:transparent;color:var(--fg);font:inherit;font-size:18px;line-height:1;cursor:pointer}
+.step-btn:hover{background:var(--surface-2)}
+.step-btn[aria-disabled="true"]{color:var(--faint);background:transparent;cursor:default}
+.step-btn:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.step-val{min-width:22px;text-align:center;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+
+.svc-foot{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap;padding-top:20px;border-top:1px solid var(--line-strong)}
+.svc-foot-label{color:var(--muted);font-size:14px;font-weight:600}
+.svc-foot strong{display:block;font-size:30px;font-weight:600;letter-spacing:-.015em;font-variant-numeric:tabular-nums}
+.svc-foot-meta{color:var(--muted);font-size:14px}
+
+/* shadcn: Collapsible с расчётом по часам */
+.calc{display:grid;gap:10px;margin-top:-8px;min-width:0}
+.calc-body{display:grid;gap:10px;min-width:0}
+.calc-toggle{justify-self:start;display:inline-flex;align-items:center;gap:8px;padding:6px 0;background:none;border:0;color:var(--fg);font:inherit;font-weight:600;font-size:15px;cursor:pointer}
+.calc-toggle svg{width:14px;height:14px;transition:transform .2s}
+.calc-toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+.calc-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:4px}
+.calc-toggle span{color:var(--muted);font-weight:500}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r)}
+.calc-table{width:100%;min-width:500px;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.calc-table th,.calc-table td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+.calc-table th:first-child,.calc-table td:first-child{text-align:left;white-space:normal}
+.calc-table thead th{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+.calc-table thead th small{display:block;font-size:11px;letter-spacing:0;text-transform:none;color:var(--accent);font-weight:600}
+.calc-table .g td{color:var(--accent);font-weight:600;background:var(--accent-tint)}
+.calc-table .st td{color:var(--soft);font-weight:600}
+.calc-table .t-unit{color:var(--muted)}
+.calc-table tfoot th,.calc-table tfoot td{font-weight:700;color:var(--fg);border-bottom:0;background:var(--surface-2)}
+.calc-note{margin:0;font-size:13px;color:var(--muted)}
+
+/* итог справа */
+.sum{position:sticky;top:calc(env(safe-area-inset-top,0px) + 24px);display:grid;gap:18px;padding:24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+@media (max-width:1023px){.sum{display:none}}
+.sum-label{color:var(--accent);font-weight:600;font-size:15px}
+.sum-total{font-size:46px;font-weight:600;letter-spacing:-.025em;line-height:1.05;font-variant-numeric:tabular-nums}
+.old{display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.old s{color:var(--muted);font-weight:600;font-size:20px;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;background:var(--accent);color:var(--accent-ink);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:600;line-height:1.4}
+.sum-lines{list-style:none;margin:0;padding:16px 0 0;border-top:1px solid var(--line);display:grid;gap:10px;font-size:14px}
+.sum-lines li{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.sum-lines li span:first-child{color:var(--soft);min-width:0}
+.sum-lines li span:last-child{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sum-lines .disc span{color:var(--accent)!important}
+.meta{margin:0;display:grid;gap:10px;font-size:14px}
+.meta div{display:grid;gap:2px}
+.meta dt{color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.meta dd{margin:0;color:var(--soft)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:999px;border:1px solid transparent;font:inherit;font-weight:600;font-size:15px;line-height:1.2;text-decoration:none;cursor:pointer;transition:background-color .15s,border-color .15s,color .15s}
+.btn-primary{background:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--line-strong)}
+.btn-ghost:hover{border-color:var(--muted)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.actions{display:flex;flex-wrap:wrap;gap:10px}
+/* кнопки итога одной ширины: в колонке справа друг под другом, в итоговом блоке рядом */
+.sum .actions{display:grid;gap:10px}
+.final .actions{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:10px}
+@media (max-width:560px){.final .actions{grid-template-columns:minmax(0,1fr)}}
+.status{margin:0;min-height:1.5em;font-size:14px;color:var(--accent)}
+.copy-fallback{width:100%;min-height:200px;padding:12px;border-radius:var(--r);border:1px solid var(--line-strong);background:var(--surface);color:var(--fg);font:inherit;font-size:14px;resize:vertical}
+
+/* итоговый слайд */
+.final{display:grid;gap:28px;margin-top:72px;padding-top:48px;border-top:1px solid var(--line)}
+.final-head{display:flex;flex-wrap:wrap;align-items:flex-end;gap:16px 36px}
+.final-head>div{display:grid;gap:8px;min-width:0}
+.final-total{margin:0;font-size:clamp(52px,11vw,144px);font-weight:600;line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.final .old{padding-bottom:12px}
+.final .old s{font-size:clamp(24px,4.4vw,64px);color:var(--faint)}
+.final-meta{margin:0;color:var(--soft);font-size:16px;max-width:70ch}
+.cards{display:flex;flex-wrap:wrap}
+.card{flex:1 1 210px;min-width:0;min-height:156px;display:grid;align-content:space-between;gap:12px;padding:20px 22px;background:var(--accent);color:var(--accent-ink);border:1px solid var(--bg);border-radius:var(--r)}
+.card-num{font-size:11px;font-weight:500;opacity:.5}
+.card-name{display:grid;gap:2px;font-size:14px;line-height:1.4}
+.card-unit{font-size:13px;opacity:.6}
+.card-price{font-size:clamp(24px,2.4vw,32px);font-weight:600;letter-spacing:-.01em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cards-empty{margin:0;padding:24px;border:1px dashed var(--line-strong);border-radius:var(--r);color:var(--muted);flex:1}
+
+.foot{display:grid;gap:32px;margin-top:72px;padding-top:36px;border-top:1px solid var(--line)}
+@media (min-width:900px){.foot{grid-template-columns:1.5fr 1fr}}
+.foot h3{margin:0 0 16px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.terms{list-style:none;margin:0;padding:0;display:grid;gap:12px;color:var(--soft);max-width:64ch}
+.terms li{display:flex;gap:12px;align-items:flex-start}
+.terms svg{flex:none;width:16px;height:16px;margin-top:4px}
+.contact{display:grid;gap:10px;align-content:start}
+.contact-name{font-size:22px;font-weight:600;letter-spacing:-.01em}
+.contact-org{color:var(--muted);font-size:14px}
+.contact-mail{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.contact-mail span{user-select:all;color:var(--soft);overflow-wrap:anywhere}
+.btn-sm{min-height:36px;padding:0 14px;font-size:14px}
+
+/* нижняя панель на телефоне */
+.mbar{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px max(16px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));background:rgba(8,8,8,.94);border-top:1px solid var(--line);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.mbar-total{display:grid;line-height:1.2}
+.mbar-total span{font-size:12px;color:var(--muted);font-weight:600}
+.mbar-total strong{font-size:22px;font-weight:600;font-variant-numeric:tabular-nums}
+@media (min-width:1024px){.mbar{display:none}}
+
+@media (max-width:520px){
+  .row{grid-template-columns:minmax(0,1fr)}
+  .row-side{flex-direction:row-reverse;justify-content:space-between;align-items:center;text-align:left}
+  .row-cost{justify-items:start}
+  .inc{grid-template-columns:26px minmax(0,1fr)}
+  .inc-hours{grid-column:2;padding-top:0}
+  .addons-toggle{padding:14px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+    <line x1="0" y1="0" x2="100" y2="100" vector-effect="non-scaling-stroke"/>
+    <line x1="100" y1="0" x2="0" y2="100" vector-effect="non-scaling-stroke"/>
+    <line x1="50" y1="0" x2="50" y2="100" vector-effect="non-scaling-stroke"/>
+  </svg>
+  <div class="bg-circle"></div>
+</div>
+
+<div class="page">
+  <header class="top">
+    <div class="logo" aria-label="Flower">
+      <svg viewBox="0 0 29 29" fill="none" aria-hidden="true"><path d="M25.4332 14.0142L28.0285 16.6095H18.3396L15.7444 14.0142H25.4332Z" fill="#fff"/><path d="M9.68886 11.419L12.2841 14.0142L2.59523 14.0268L0 11.419H9.68886Z" fill="#fff"/><path d="M14.0142 25.4332L11.419 28.0285V18.3396L14.0142 15.7444V25.4332Z" fill="#fff"/><path d="M16.6095 9.68886L14.0142 12.2841V2.59523L16.6095 0V9.68886Z" fill="#fff"/><path d="M20.2428 12.2841H16.6095L23.5301 5.36347H27.1634L20.2428 12.2841Z" fill="#fff"/><path d="M15.7444 20.4158V16.6095L22.665 23.5301V27.1634L15.7444 20.4158Z" fill="#fff"/><path d="M5.36347 4.67141V1.03809L12.2841 7.9689V11.419L5.36347 4.67141Z" fill="#fff"/><path d="M7.78569 15.7444H11.419L4.64081 22.6695H1.03845L7.78569 15.7444Z" fill="#fff"/><path d="M12.2841 14.0142L14.0142 12.2841L15.7444 14.0142L14.0142 15.7444L12.2841 14.0142Z" fill="#fff"/></svg>
+      <span>Flower</span>
+    </div>
+    <div class="icons" aria-hidden="true">
+      <svg viewBox="0 0 161 54" fill="none"><path d="M135.906 25.6852L147.544 26.8608L135.879 28.2729L143.704 36.6324C144.954 36.92 146.083 37.079 147.018 37.0695C152.439 37.0144 156.879 32.6027 156.934 27.2155C156.989 21.8283 152.64 17.5057 147.219 17.5607C146.018 17.5729 144.483 17.8706 142.771 18.371L135.907 25.6844L135.906 25.6852Z" fill="#FFBB00"/><path d="M124.137 17.1889L132.549 24.965L133.97 13.3733L135.153 24.9386L142.512 18.1165C143.015 16.4165 143.315 14.8898 143.327 13.6969C143.383 8.30969 139.033 3.98712 133.612 4.04216C128.191 4.0972 123.752 8.50898 123.696 13.8962C123.687 14.826 123.847 15.9477 124.136 17.1897L124.137 17.1889Z" fill="#FFBB00"/><path d="M131.756 28.3156L120.118 27.14L131.783 25.7279L123.958 17.3684C122.708 17.0808 121.579 16.9219 120.644 16.9313C115.223 16.9864 110.783 21.3982 110.728 26.7854C110.673 32.1726 115.022 36.4951 120.443 36.4401C121.644 36.4279 123.179 36.1302 124.89 35.6306L131.754 28.3173L131.756 28.3156Z" fill="#FFBB00"/><path d="M143.524 36.8113L135.112 29.0351L133.691 40.6268L132.508 29.0615L125.149 35.8836C124.646 37.5836 124.346 39.1103 124.334 40.3032C124.278 45.6904 128.628 50.013 134.049 49.958C139.47 49.9029 143.909 45.4912 143.965 40.104C143.974 39.1741 143.814 38.0524 143.525 36.8104L143.524 36.8113Z" fill="#FFBB00"/><path d="M94.9983 26.3639C96.8728 23.8169 98.4232 21.2932 99.5606 18.9119C102.91 11.8988 101.641 8.43776 99.9864 6.76853C98.3318 5.10046 94.9011 3.8211 87.9496 7.19926C85.5892 8.34671 83.0876 9.91206 80.563 11.8019C78.0383 9.91089 75.5367 8.34671 73.1764 7.19926C66.2248 3.81994 62.7941 5.10046 61.1395 6.76969C59.4861 8.43893 58.2168 11.9 61.5665 18.9131C62.7039 21.2944 64.2555 23.8181 66.1287 26.3651C64.2543 28.9121 62.7039 31.4358 61.5665 33.8171C58.2168 40.8291 59.4861 44.2913 61.1407 45.9593C62.0351 46.8617 63.4479 47.6508 65.6578 47.6508C67.5346 47.6508 69.984 47.0823 73.1775 45.5298C75.5379 44.3823 78.0394 42.817 80.5641 40.9271C83.0888 42.8182 85.5904 44.3823 87.9507 45.5298C91.1442 47.0823 93.5937 47.6508 95.4704 47.6508C97.6792 47.6508 99.0931 46.8617 99.9875 45.9593C101.642 44.2913 102.91 40.8291 99.5617 33.8171C98.4244 31.4358 96.8728 28.9121 94.9995 26.3651L94.9983 26.3639ZM97.1088 9.67276C98.5331 11.1097 97.0764 16.3894 92.3753 23.0383C91.1072 21.5302 89.7418 20.0314 88.2921 18.5687C86.8423 17.1061 85.3566 15.7275 83.8617 14.4493C90.4523 9.70778 95.6856 8.23699 97.1088 9.67393V9.67276ZM89.8344 26.3639C88.5304 27.955 87.0598 29.5938 85.4133 31.2561C83.7668 32.9171 82.1412 34.4008 80.5641 35.7163C78.9871 34.4008 77.3626 32.9171 75.7149 31.2561C74.0684 29.595 72.5978 27.955 71.2938 26.3639C72.5978 24.7729 74.0684 23.134 75.7149 21.4718C77.3614 19.8107 78.9859 18.3283 80.5618 17.0127C82.14 18.3283 83.7645 19.8084 85.4122 21.4718C87.0587 23.1329 88.5293 24.7729 89.8333 26.3639H89.8344ZM64.0206 9.67276C64.3677 9.32257 64.9405 9.14514 65.703 9.14514C68.0726 9.14514 72.2819 10.8692 77.2631 14.4517C75.7693 15.7299 74.286 17.1061 72.8373 18.5676C71.3875 20.0302 70.0211 21.529 68.7541 23.0371C64.053 16.3882 62.5963 11.1085 64.0206 9.6716V9.67276ZM64.0206 43.0551C62.5963 41.6182 64.053 36.3385 68.7541 29.6896C70.0222 31.1977 71.3875 32.6965 72.8373 34.1591C74.2871 35.6218 75.7728 37.0003 77.2677 38.2785C70.6771 43.0201 65.4438 44.4897 64.0194 43.0539L64.0206 43.0551ZM97.1099 43.0551C95.6856 44.4921 90.4523 43.0224 83.8617 38.2797C85.3566 37.0003 86.8423 35.6229 88.2921 34.1603C89.7418 32.6977 91.1083 31.1989 92.3753 29.6907C97.0764 36.3397 98.5331 41.6193 97.1088 43.0563L97.1099 43.0551Z" fill="#FFBB00"/><path d="M5.71976 27.6325C5.71976 26.055 7.37874 24.6146 10.1176 23.5051C9.61538 22.7203 9.15738 21.9509 8.74622 21.201C3.40639 22.728 0 25.0413 0 27.6325C0 30.2237 3.37512 32.5149 8.67202 34.042C9.08057 33.2895 9.536 32.5162 10.0369 31.7275C7.34489 30.622 5.71976 29.1932 5.71976 27.6325Z" fill="#FFBB00"/><path d="M23.9773 9.48753C25.5322 9.48753 26.9556 11.0676 28.0628 13.6899C28.8552 13.1817 29.6346 12.7188 30.3931 12.3024C28.8565 7.10707 26.5535 3.80469 23.9773 3.80469C21.4011 3.80469 19.1605 7.01915 17.6239 12.0943C18.3929 12.5042 19.1826 12.9632 19.9893 13.4688C21.0822 10.9797 22.468 9.48753 23.9773 9.48753Z" fill="#FFBB00"/><path d="M23.9773 45.7765C22.4433 45.7765 21.0354 44.2365 19.9346 41.6724C19.1331 42.1728 18.3473 42.628 17.5835 43.034C19.1202 48.1867 21.4141 51.4606 23.9773 51.4606C26.5405 51.4606 28.8955 48.1001 30.4334 42.8258C29.6775 42.4133 28.9034 41.953 28.1136 41.4487C26.9998 44.146 25.5556 45.7765 23.9773 45.7765Z" fill="#FFBB00"/><path d="M47.9545 27.6325C47.9545 25.1046 44.7121 22.8418 39.596 21.3134C39.1758 22.075 38.7061 22.856 38.1921 23.6525C40.7202 24.7413 42.236 26.1248 42.236 27.6325C42.236 29.1401 40.7501 30.4939 38.2715 31.5775C38.7854 32.3791 39.2525 33.1653 39.6714 33.9295C44.7446 32.4011 47.9545 30.1474 47.9545 27.6325Z" fill="#FFBB00"/><path d="M10.9645 15.0167C12.064 13.9241 14.194 14.0404 16.8431 15.1175C17.0747 14.0508 17.3363 13.0408 17.6239 12.0943C12.9333 9.59226 9.0428 8.92006 7.24724 10.7044C5.42956 12.5108 6.14656 16.4556 8.74622 21.201C9.45664 20.9967 10.2021 20.8081 10.9776 20.6336C9.9796 18.1057 9.89762 16.077 10.9645 15.0167Z" fill="#FFBB00"/><path d="M36.7856 15.0166C37.8473 16.0704 37.7719 18.0837 36.7895 20.5908C37.7758 20.8081 38.7139 21.0497 39.596 21.3134C42.2464 16.5189 42.9894 12.5249 41.1574 10.7044C39.3124 8.87215 35.2567 9.62976 30.3931 12.3024C30.6494 13.1662 30.8837 14.0817 31.0945 15.0425C33.6564 14.0365 35.7135 13.9499 36.7856 15.0166Z" fill="#FFBB00"/><path d="M36.7855 40.6763C35.7004 41.7547 33.6095 41.6539 31.0059 40.6143C30.8303 41.3836 30.6377 42.1224 30.4334 42.8258C35.2802 45.4817 39.3175 46.2299 41.1573 44.4015C42.9724 42.5978 42.2607 38.6632 39.6714 33.9295C38.7203 34.2152 37.7041 34.4763 36.6307 34.709C37.7614 37.3985 37.9019 39.5669 36.7855 40.6763Z" fill="#FFBB00"/><path d="M10.9646 40.6768C9.84307 39.5609 9.99011 37.377 11.1377 34.6668C10.2777 34.4767 9.454 34.2683 8.67202 34.042C6.13351 38.7253 5.44657 42.6124 7.24734 44.402C9.03769 46.1799 12.9112 45.5192 17.5835 43.034C17.348 42.2439 17.1307 41.4099 16.9316 40.5371C14.2422 41.6479 12.0758 41.7797 10.9646 40.6768Z" fill="#FFBB00"/><path d="M30.9786 23.7847C31.5159 22.4141 31.5576 21.3137 30.9786 20.7383C30.3918 20.1552 29.2689 20.203 27.8689 20.7525C27.0596 17.0661 25.6205 14.6107 23.9785 14.6107C22.3365 14.6107 20.887 17.0829 20.0803 20.7926C18.6322 20.2043 17.4677 20.1409 16.8679 20.7383C16.2837 21.3176 16.3292 22.4257 16.8743 23.808C13.2663 24.6187 10.8761 26.0281 10.8761 27.6327C10.8761 29.2374 13.304 30.6687 16.9615 31.4769C16.3357 32.9574 16.255 34.1508 16.8679 34.7612C17.4742 35.3637 18.6582 35.2913 20.1285 34.6849C20.9443 38.2756 22.3638 40.6548 23.9785 40.6548C25.5932 40.6548 27.0024 38.2937 27.8195 34.7275C29.2429 35.2952 30.3853 35.3495 30.9786 34.7612C31.5888 34.1547 31.5121 32.9703 30.894 31.5002C34.6087 30.6959 37.0822 29.2645 37.0822 27.6327C37.0822 26.0009 34.6465 24.5915 30.9799 23.7847H30.9786Z" fill="#FFBB00"/></svg>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-meta">— 2026 · смета для команды DI·ZIO</div>
+    <h1>Брендинг и сайт для DI·ZIO</h1>
+    <div class="bracket">[ смета от <a href="https://flowerteam.ru" target="_blank" rel="noopener">flowerteam.ru</a> ]</div>
+    <p>Две услуги с фиксированной ценой и понятным составом. Если понадобится что-то сверх базы, добавьте это в дополнительных услугах под каждой.</p>
+    <div class="rates" id="rates"></div>
+    <p class="hero-rec" id="hero-rec"></p>
+  </section>
+
+  <div class="layout">
+    <main class="services" id="services"></main>
+
+    <aside class="sum" aria-label="Итог сметы">
+      <div class="sum-label">[ итого ]</div>
+      <div class="sum-total" data-total>0 ₽</div>
+      <div class="old" data-old-wrap><s data-old></s><span class="pill" data-disc-pill></span></div>
+      <ul class="sum-lines" data-lines></ul>
+      <dl class="meta">
+        <div><dt>Часы</dt><dd data-hours-total></dd></div>
+        <div><dt>Срок</dt><dd data-weeks></dd></div>
+        <div><dt>Команда</dt><dd data-team></dd></div>
+      </dl>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" data-copy>Скопировать выбор</button>
+        <button type="button" class="btn btn-ghost" data-reset>Убрать доп. услуги</button>
+      </div>
+      <p class="status" role="status" aria-live="polite" data-status></p>
+    </aside>
+  </div>
+
+  <section class="final" id="itog" aria-labelledby="final-total">
+    <div class="final-head">
+      <div>
+        <div class="bracket">[ ваша смета ]</div>
+        <h2 class="final-total" id="final-total" data-total>0 ₽</h2>
+      </div>
+      <div class="old" data-old-wrap><s data-old></s><span class="pill" data-disc-pill></span></div>
+    </div>
+    <p class="final-meta" data-final-meta></p>
+    <div class="cards" data-cards></div>
+    <div class="actions">
+      <button type="button" class="btn btn-primary" data-copy>Скопировать выбор</button>
+      <button type="button" class="btn btn-ghost" data-reset>Убрать доп. услуги</button>
+    </div>
+    <p class="status" role="status" aria-live="polite" data-status></p>
+    <textarea class="copy-fallback" id="copy-fallback" readonly hidden aria-label="Текст сметы для ручного копирования"></textarea>
+  </section>
+
+  <footer class="foot">
+    <div>
+      <h3>Условия</h3>
+      <ul class="terms" id="terms"></ul>
+    </div>
+    <div class="contact">
+      <h3>Связь</h3>
+      <div class="contact-name">Никита Цветков</div>
+      <div class="contact-org">От лица студии «Flower», ИП Цветков Никита Валерьевич</div>
+      <a class="contact-site" href="https://flowerteam.ru" target="_blank" rel="noopener">flowerteam.ru</a>
+      <div class="contact-mail"><span id="mail">flowerteamcorporate@yandex.com</span><button type="button" class="btn btn-ghost btn-sm" data-copy-mail>Скопировать почту</button></div>
+      <p class="status" role="status" aria-live="polite" data-mail-status></p>
+    </div>
+  </footer>
+</div>
+
+<div class="mbar">
+  <div class="mbar-total"><span data-mbar-label>Итого</span><strong data-total>0 ₽</strong></div>
+  <a class="btn btn-primary btn-sm" href="#itog">К итогу</a>
+</div>
+
+<script>
+(() => {
+  const RATES = { d: 1500, dev: 1500 }; // ₽ в час: дизайн и разработка
+  const WEEK_H = 30;                    // рабочих часов в неделю на проект
+  const DISCOUNT = 33000;               // скидка за комплекс, ₽: 15% от 219 000, округлено до тысячи
+  const KEY = 'dizio-smeta-v3';
+
+  const nf = new Intl.NumberFormat('ru-RU');
+  const rub = n => nf.format(Math.round(n)).replace(/\s/g, '\u00a0') + '\u00a0₽';
+  const plural = (n, f) => { const a = Math.abs(n) % 100, b = a % 10; if (a > 10 && a < 20) return f[2]; if (b === 1) return f[0]; if (b >= 2 && b <= 4) return f[1]; return f[2]; };
+  const hrs = n => n + ' ч';
+  const hoursWord = n => n + ' ' + plural(n, ['час', 'часа', 'часов']);
+  const weeksLabel = w => '≈ ' + w + ' ' + plural(w, ['неделя', 'недели', 'недель']);
+  const stagesWord = n => n + ' ' + plural(n, ['этап', 'этапа', 'этапов']);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const cost = h => h[0] * RATES.d + h[1] * RATES.dev;
+  const addH = (a, b) => [a[0] + b[0], a[1] + b[1]];
+  const ROLE_ORDER = ['Арт-директор', 'Стратег', 'Копирайтер', 'Дизайнер', 'Моушн-дизайнер', 'Разработчик'];
+  const CHEVRON = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const PLUS = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
+  const BULLET = '<svg viewBox="0 0 29 29" fill="none" aria-hidden="true"><path d="M25.43 14.01l2.6 2.6h-9.69l-2.6-2.6h9.69zM9.69 11.42l2.6 2.6H2.6L0 11.42h9.69zM14.01 25.43l-2.59 2.6v-9.69l2.59-2.6v9.69zM16.61 9.69l-2.6 2.59V2.6L16.61 0v9.69zM20.24 12.28h-3.63l6.92-6.92h3.63l-6.92 6.92zM15.74 20.42v-3.81l6.92 6.92v3.63l-6.92-6.74zM5.36 4.67V1.04l6.92 6.93v3.45L5.36 4.67zM7.79 15.74h3.63l-6.78 6.93H1.04l6.75-6.93zM12.28 14.01l1.73-1.73 1.73 1.73-1.73 1.73-1.73-1.73z" fill="#FFBB00"/></svg>';
+
+  // core — базовый состав: фиксированная цена = сумма часов × ставка. h → [часы дизайна, часы разработки]
+  // addons — доп. услуги, спрятаны под кнопкой. h — за единицу; qty — услуги, которые берут несколько раз
+  const SERVICES = [
+    {
+      id: 'brand', num: '01', title: 'Брендинг', short: 'брендинг', weeks: 4, rev: '3 итерации правок', cols: ['Дизайн и стратегия', 'Разработка'],
+      lead: 'Смыслы, логотип, фирменный стиль и носители DI·ZIO с нуля, собранные в брендбук.',
+      core: [
+        { name: 'Предпроектное исследование', why: 'Созвоны с командой DI·ZIO, анализ конкурентов в мебели для HoReCa и целевой аудитории.', role: 'Стратег', h: [6, 0] },
+        { name: 'Платформа бренда', why: 'Миссия, слоган, суть бренда и его ключевые качества, метафора и ассоциации бренда.', role: 'Стратег', h: [7, 0] },
+        { name: 'Логотип', why: 'Три концепции, у каждой своя идея и метафора с объяснением, как она связана с платформой бренда. Защита, выбор одной, доработка. Исполнения, охранное поле, правила использования.', role: 'Дизайнер', h: [15, 0] },
+        { name: 'Визуальная концепция', why: 'Три мудборда и три концепции стиля вокруг выбранного логотипа, показанные на носителях. Обсуждение, выбор одной, доработка.', role: 'Арт-директор', h: [10, 0] },
+        { name: 'Фирменный стиль', why: 'Цветовая палитра, шрифтовые пары с лицензиями, фирменная графика, правила использования. Оформление соцсетей: аватар, обложки VK и Telegram, шаблоны постов и сторис.', role: 'Дизайнер', h: [14, 0] },
+        { name: 'Носители', why: '12 носителей: визитка, фирменный бланк, шаблон презентации и КП, папка для документов, бейдж, блокнот, шильд на мебель, бирка на изделие, наклейка на упаковку, футболка, худи, шоппер.', role: 'Дизайнер', h: [18, 0] },
+        { name: 'Брендбук и исходники', why: 'Все разделы, от платформы бренда до носителей. Исходники и файлы для печати.', role: 'Дизайнер', h: [10, 0] }
+      ],
+      addons: [
+        { title: 'Разделы брендбука', items: [
+          { id: 'x_catalog', name: 'Каталог мебели', why: 'Как выглядит каталог DI·ZIO: обложка, разворот коллекции, страница модели, страница материалов, сетка и правила вёрстки. Шаблоны для печати и PDF.', role: 'Дизайнер', h: [10, 0] },
+          { id: 'x_passport', name: 'Техпаспорт изделия', why: 'Шаблон техпаспорта для 70+ моделей и правила: какие данные указывать, как оформлять размеры, схемы и материалы.', role: 'Дизайнер', h: [7, 0] },
+          { id: 'x_photostyle', name: 'Фотостиль', why: 'Правила съёмки мебели: ракурсы, свет, фон, предметная и интерьерная съёмка. Обработка, фирменный фильтр и примеры. По этому разделу любой фотограф снимает в стиле бренда.', role: 'Арт-директор', h: [7, 0] },
+          { id: 'x_ai', name: 'Бренд-система для нейросетей', why: 'Токены цветов и шрифтов, Figma-библиотека компонентов и инструкции для Claude и других нейросетей. Команда сама собирает материалы в стиле бренда.', role: 'Дизайнер', h: [10, 4] }
+        ] },
+        { title: 'Носители и упаковка', items: [
+          { id: 'b_media', name: 'Дополнительные носители', why: 'Кепка, ручка, пакет, конверт, чехол для телефона: всё, что понадобится сверх двенадцати базовых.', role: 'Дизайнер', qty: { max: 10, per: 'за носитель', label: n => n + ' ' + plural(n, ['носитель', 'носителя', 'носителей']) }, h: [2, 0] },
+          { id: 'x_pack', name: 'Фирменная упаковка', why: 'Коробка, скотч, стрейч-плёнка и этикетки для отгрузки мебели. Макеты под размеры вашей упаковки.', role: 'Дизайнер', h: [8, 0] },
+          { id: 'x_box', name: 'Бокс образцов для дизайнеров', why: 'Коробка с образцами тканей, выкрасов и металла, которую отправляют дизайнерам интерьеров: печать на коробке, вкладыш с описанием материалов, этикетки на образцы. Макеты для печати под размеры производителя упаковки.', role: 'Дизайнер', h: [8, 0] }
+        ] },
+        { title: 'Выставки и медиа', items: [
+          { id: 'x_outdoor', name: 'Наружная реклама и выставки', why: 'Ролл-ап, вывеска шоурума, графика для выставочного стенда: фриз с логотипом, стеновые панели, баннеры. Плюс правила в брендбуке, чтобы подрядчик собрал стенд без вас.', role: 'Дизайнер', h: [17, 0] },
+          { id: 'x_podcast', name: 'Айдентика подкаста', why: 'Оформление подкаста «Дизайн и общение» в стиле DI·ZIO: обложка, моушн-заставка с анимированным логотипом, титры и плашки, оформление YouTube-канала и шаблон превью выпусков.', role: 'Моушн-дизайнер', h: [20, 0] }
+        ] }
+      ]
+    },
+    {
+      id: 'site', num: '02', title: 'Сайт', short: 'сайт', weeks: 3, rev: '2 итерации правок на этап', cols: ['Дизайн и тексты', 'Разработка'],
+      lead: 'Сайт-каталог под ключ: структура, тексты, дизайн, разработка и запуск.',
+      core: [
+        { name: 'Предпроектное исследование', why: 'Созвоны с командой DI·ZIO, анализ сайтов конкурентов и целевой аудитории, сбор материалов для сайта.', role: 'Арт-директор', h: [5, 0] },
+        { name: 'Смысловая структура и прототип', why: 'Дорабатываем готовую структуру от команды DI·ZIO и пишем тексты для каждого блока. Итог этапа — прототип сайта с готовыми текстами.', role: 'Копирайтер', h: [10, 0] },
+        { name: 'Визуальная концепция', why: 'Три мудборда и три визуальные концепции сайта по брендбуку. Обсуждение, выбор одной, доработка.', role: 'Дизайнер', h: [6, 0] },
+        { name: 'Дизайн', why: 'Все экраны сайта, включая каталог, в версиях для компьютера, планшета и телефона. Состояния кнопок и форм, анимации появления блоков.', role: 'Дизайнер', h: [18, 0] },
+        { name: 'Разработка сайта', why: 'Вёрстка всех экранов по дизайну, адаптив, анимации и каталог с 3D-просмотром моделей, в который можно добавлять модели без разработчика.', role: 'Разработчик', h: [0, 18] },
+        { name: 'Техническая настройка', why: 'Домен и SSL-сертификат, формы заявок с уведомлениями на почту и в Telegram, передача заявок в CRM (например, Битрикс24), Яндекс Метрика с целями.', role: 'Разработчик', h: [0, 5] },
+        { name: 'Тестирование и поддержка', why: 'Проверка на телефонах, планшетах и компьютерах в разных браузерах, исправление ошибок. Первый месяц после запуска поддерживаем бесплатно.', role: 'Разработчик', h: [0, 4] }
+      ],
+      addons: [
+        { title: 'Заявки', items: [
+          { id: 's_builder', name: 'Конструктор заявки', why: 'Клиент выбирает модель, ткань, цвет и количество, менеджер получает готовый запрос на расчёт.', role: 'Разработчик', h: [4, 6] },
+          { id: 's_quiz', name: 'Квиз для подбора мебели', why: 'Пять вопросов: тип заведения, стиль, количество посадочных мест, бюджет, контакт. Ответы уходят менеджеру в CRM.', role: 'Разработчик', h: [5, 5] },
+          { id: 's_analytics', name: 'Сквозная аналитика и коллтрекинг', why: 'Видно, из какой рекламы пришла каждая заявка и каждый звонок. Подписка на сервис оплачивается отдельно.', role: 'Разработчик', h: [0, 4] }
+        ] },
+        { title: 'Каталог', items: [
+          { id: 's_fill', name: 'Наполнение каталога', why: 'Собираем у производства данные и фото до 70 моделей, пишем описания по единому шаблону и загружаем на сайт.', role: 'Копирайтер', h: [14, 0] },
+          { id: 's_catalog', name: 'Каталог с фильтрами и карточками моделей', why: 'Фильтры по типу, материалу и назначению, отдельная страница для каждой модели, скачивание 3D-моделей и техпаспортов.', role: 'Разработчик', h: [3, 6] }
+        ] },
+        { title: 'Сайт', items: [
+          { id: 's_pages', name: 'Дополнительные страницы', why: 'Например, для дизайнеров, о производстве или проекты. Тексты, дизайн с адаптивами и вёрстка.', role: 'Дизайнер', qty: { max: 6, per: 'за страницу', label: n => n + ' ' + plural(n, ['страница', 'страницы', 'страниц']) }, h: [4, 3] },
+          { id: 's_anim', name: 'Продвинутые анимации', why: 'Сложные переходы между экранами, анимация моделей при прокрутке, 3D-эффекты.', role: 'Дизайнер', h: [3, 5] },
+          { id: 's_seo', name: 'SEO-настройка', why: 'Мета-теги, карта сайта, настройка скорости загрузки, подключение Яндекс Вебмастера.', role: 'Разработчик', h: [0, 4] }
+        ] },
+        { title: 'После запуска', items: [
+          { id: 's_support', name: 'Поддержка сайта', why: 'Правки, обновления и небольшие доработки по запросу. Первый месяц после запуска уже входит в базу.', role: 'Разработчик', qty: { max: 12, per: 'в месяц', label: n => n + ' ' + plural(n, ['месяц', 'месяца', 'месяцев']) }, rub: 10000, note: 'первый месяц — в базе', h: [0, 0] }
+        ] }
+      ]
+    }
+  ];
+  SERVICES.forEach(s => {
+    s.extras = s.addons.flatMap(g => g.items);
+    s.coreH = s.core.reduce((a, it) => addH(a, it.h), [0, 0]);
+    s.price = cost(s.coreH);
+  });
+
+  const maxOf = a => a.qty ? a.qty.max : 1;
+  const extraH = (a, v) => [a.h[0] * v[a.id], a.h[1] * v[a.id]];
+  const extrasH = (s, v) => s.extras.reduce((acc, a) => addH(acc, extraH(a, v)), [0, 0]);
+  const extraCost = (a, v) => a.rub ? a.rub * v[a.id] : cost(extraH(a, v));
+  const extrasCost = (s, v) => s.extras.reduce((acc, a) => acc + extraCost(a, v), 0);
+  const fixedCost = (s, v) => s.extras.reduce((acc, a) => acc + (a.rub ? extraCost(a, v) : 0), 0);
+  const pickedOf = (s, v) => s.extras.filter(a => v[a.id] > 0);
+  const pickName = (a, v) => a.name + (a.qty ? ` (${a.qty.label(v[a.id])})` : '');
+  const hoursSvc = (s, v) => addH(s.coreH, extrasH(s, v));
+  const weeksOf = (s, v) => { const h = hoursSvc(s, v); return Math.max(s.weeks, Math.ceil((h[0] + h[1]) / WEEK_H) + 1); };
+  const baseWeeks = s => Math.max(s.weeks, Math.ceil((s.coreH[0] + s.coreH[1]) / WEEK_H) + 1);
+  const plusWeeks = n => '+' + n + ' ' + plural(n, ['неделя', 'недели', 'недель']);
+  const sameRate = RATES.d === RATES.dev;
+  const rateText = sameRate ? rub(RATES.d) + '/ч' : 'дизайн ' + rub(RATES.d) + '/ч, разработка ' + rub(RATES.dev) + '/ч';
+
+  const fresh = () => Object.fromEntries(SERVICES.map(s => [s.id, { on: true, v: Object.fromEntries(s.extras.map(a => [a.id, 0])) }]));
+  function load() {
+    try {
+      const raw = localStorage.getItem(KEY);
+      if (!raw) return null;
+      const d = JSON.parse(raw), out = fresh();
+      for (const s of SERVICES) {
+        const st = d && d[s.id];
+        if (!st || typeof st !== 'object') continue;
+        out[s.id].on = st.on !== false;
+        if (st.v && typeof st.v === 'object') s.extras.forEach(a => { out[s.id].v[a.id] = Math.min(maxOf(a), Math.max(0, Math.round(+st.v[a.id]) || 0)); });
+      }
+      return out;
+    } catch (e) { return null; }
+  }
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} };
+  let state = load() || fresh();
+
+  // разметка
+  const incHTML = (it, i) => `<li class="inc"><span class="inc-idx">${String(i + 1).padStart(2, '0')}</span><div><span class="inc-name">${esc(it.name)}</span><p class="inc-why">${esc(it.why)}</p></div><span class="inc-hours">${hrs(it.h[0] + it.h[1])}</span></li>`;
+  function extraHTML(a) {
+    const ctl = a.qty
+      ? `<div class="step" role="group" aria-labelledby="n-${a.id}"><button type="button" class="step-btn" data-step="-1" data-item="${a.id}" aria-label="Меньше">−</button><output class="step-val" data-qty>0</output><button type="button" class="step-btn" data-step="1" data-item="${a.id}" aria-label="Больше">+</button></div>`
+      : `<button type="button" class="switch" role="switch" aria-checked="false" data-item="${a.id}" aria-labelledby="n-${a.id}"></button>`;
+    const flag = a.flag ? `<span class="chip chip-flag">${esc(a.flag)}</span>` : '';
+    return `<div class="row${a.qty ? '' : ' row-click'}" data-row="${a.id}"><div class="row-main"><div class="row-head"><span class="row-name" id="n-${a.id}">${esc(a.name)}</span>${flag}</div><p class="row-why">${esc(a.why)}</p></div><div class="row-side">${ctl}<span class="row-cost"><span class="row-price" data-price></span><span class="row-hours" data-hours></span></span></div></div>`;
+  }
+  function serviceHTML(s) {
+    const ch = s.coreH[0] + s.coreH[1];
+    const extras = s.addons.map(g => `<div class="xgroup"><div class="group-head"><span class="group-title">${esc(g.title)}</span></div>${g.items.map(extraHTML).join('')}</div>`).join('');
+    const rateHead = r => `<small>${rub(r)}/ч</small>`;
+    return `<section class="svc" id="svc-${s.id}" data-svc="${s.id}" aria-labelledby="h-${s.id}">
+      <div class="svc-head"><div class="svc-title"><span class="num">${s.num} /</span><h2 id="h-${s.id}">${esc(s.title)}</h2></div>
+      <div class="master"><span id="m-${s.id}">В смете</span><button type="button" class="switch" role="switch" aria-checked="true" data-service="${s.id}" aria-labelledby="m-${s.id} h-${s.id}"></button></div></div>
+      <p class="off-note" data-offnote hidden>Не входит в смету. Включите переключатель, чтобы вернуть.</p>
+      <div class="svc-body">
+        <p class="svc-lead">${esc(s.lead)}</p>
+        <div class="price-box"><div class="price-main"><span class="price-label">Фиксированная цена</span><strong class="price-big">${rub(s.price)}</strong></div><span class="price-meta">${hoursWord(ch)} работы · ${weeksLabel(baseWeeks(s))} · ${esc(s.rev)}</span></div>
+        <div class="group"><div class="group-head"><span class="group-title">Что входит</span><span class="group-hint">${stagesWord(s.core.length)} · ${hrs(ch)}</span></div><ol class="incs">${s.core.map(incHTML).join('')}</ol></div>
+        <div class="addons">
+          <button type="button" class="addons-toggle" aria-expanded="false" aria-controls="x-${s.id}" data-addons-toggle><span class="addons-plus">${PLUS}</span><span class="addons-text"><span class="addons-label">Добавить дополнительные услуги</span><span class="addons-hint" data-addons-hint></span></span>${CHEVRON}</button>
+          <p class="addons-picked" data-picked hidden></p>
+          <div class="addons-body" id="x-${s.id}" hidden>${extras}</div>
+        </div>
+        <div class="svc-foot"><div><span class="svc-foot-label">Итого за ${esc(s.short)}</span><strong data-sub></strong></div><span class="svc-foot-meta" data-meta></span></div>
+        <div class="calc">
+          <button type="button" class="calc-toggle" aria-expanded="false" aria-controls="calc-${s.id}" data-calc-toggle>Расчёт по часам <span data-calc-hint></span>${CHEVRON}</button>
+          <div class="calc-body" id="calc-${s.id}" hidden>
+            <div class="table-wrap"><table class="calc-table">
+              <thead><tr><th scope="col">Этап</th><th scope="col">${esc(s.cols[0])}, ч${rateHead(RATES.d)}</th><th scope="col">${esc(s.cols[1])}, ч${rateHead(RATES.dev)}</th><th scope="col">Итого, ч</th><th scope="col">Сумма</th></tr></thead>
+              <tbody data-calc-body></tbody>
+              <tfoot data-calc-foot></tfoot>
+            </table></div>
+            <p class="calc-note">Сумма этапа равна часам, умноженным на ставку. Доп. услуги появляются в таблице, когда вы их добавляете.</p>
+          </div>
+        </div>
+      </div>
+    </section>`;
+  }
+  const root = document.getElementById('services');
+  root.innerHTML = SERVICES.map(serviceHTML).join('');
+  document.getElementById('terms').innerHTML = [
+    `Брендинг и сайт стоят фиксированно за базовый состав. Он посчитан по часам: ${sameRate ? rub(RATES.d) + '/ч за дизайн, тексты и разработку' : rateText}.`,
+    'Дополнительные услуги считаются так же, часы × ставка. Их можно добавить и после старта.',
+    'Работаем по договору, оплату можно разбить по этапам.',
+    'Сайт делаем под ключ: структура, тексты, дизайн, разработка и запуск. Фото, данные и 3D-модели для каталога предоставляет DI·ZIO.',
+    'Платные лицензии шрифтов, фотосъёмка и печать оплачиваются отдельно, по счетам подрядчиков.',
+    'Заявку на товарный знак ведёт патентное бюро, в смету она не входит.',
+    `Скидка ${rub(DISCOUNT)} за комплекс действует, когда в смете и брендинг, и сайт.`
+  ].map(t => `<li>${BULLET}<span>${esc(t)}</span></li>`).join('');
+
+  // ставка и цена комплекса в шапке
+  document.getElementById('rates').innerHTML = (sameRate
+    ? `<span class="rate"><b>${rub(RATES.d)}/ч</b> дизайн, тексты и разработка</span>`
+    : `<span class="rate"><b>${rub(RATES.d)}/ч</b> дизайн</span><span class="rate"><b>${rub(RATES.dev)}/ч</b> разработка</span>`)
+    + '<span class="rates-note">Цена базового состава посчитана как часы × ставка. Подробный расчёт открывается под каждой услугой.</span>';
+  (() => {
+    const sum = SERVICES.reduce((a, s) => a + s.price, 0);
+    document.getElementById('hero-rec').innerHTML = `${esc(SERVICES.map((s, i) => i ? s.title.toLowerCase() : s.title).join(' и '))} вместе: <b>${rub(sum - DISCOUNT)}</b> вместо ${rub(sum)}.`;
+  })();
+
+  // анимация чисел
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const target = new WeakMap();
+  function setMoney(el, val, animate) {
+    const from = target.has(el) ? target.get(el) : val;
+    target.set(el, val);
+    if (!animate || reduce || from === val) { el.textContent = rub(val); return; }
+    const t0 = performance.now(), dur = 380;
+    const step = t => {
+      if (target.get(el) !== val) return;
+      const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+      el.textContent = rub(Math.round((from + (val - from) * e) / 100) * 100);
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  function compute() {
+    const parts = SERVICES.filter(s => state[s.id].on).map(s => {
+      const v = state[s.id].v, h = addH(s.coreH, extrasH(s, v)), xp = extrasCost(s, v);
+      return { s, v, h, xp, sub: s.price + xp, fixed: fixedCost(s, v), picked: pickedOf(s, v), weeks: weeksOf(s, v) };
+    });
+    const sum = parts.reduce((a, p) => a + p.sub, 0);
+    const hours = parts.reduce((a, p) => addH(a, p.h), [0, 0]);
+    const fixed = parts.reduce((a, p) => a + p.fixed, 0);
+    const both = parts.length === SERVICES.length;
+    const disc = both ? DISCOUNT : 0;
+    const weeks = parts.reduce((a, p) => a + p.weeks, 0);
+    const team = new Set();
+    parts.forEach(p => { p.s.core.forEach(it => team.add(it.role)); p.picked.forEach(a => team.add(a.role)); });
+    return { parts, sum, hours, fixed, both, disc, total: sum - disc, weeks, team: ROLE_ORDER.filter(r => team.has(r)) };
+  }
+
+  function calcHTML(s, v) {
+    const groups = [{ title: 'Базовый состав', rows: s.core.map(it => ({ name: it.name, h: it.h, sum: cost(it.h) })) }]
+      .concat(s.addons.map(g => ({ title: 'Доп. услуги: ' + g.title.toLowerCase(), rows: g.items.filter(a => v[a.id] > 0).map(a => ({ name: a.name, unit: a.qty ? a.qty.label(v[a.id]) : '', h: extraH(a, v), sum: extraCost(a, v), fixed: !!a.rub })) })));
+    const rows = [];
+    let n = 0;
+    groups.forEach(g => {
+      if (!g.rows.length) return;
+      n += 1;
+      const t = g.rows.reduce((a, r) => addH(a, r.h), [0, 0]), ts = g.rows.reduce((a, r) => a + r.sum, 0);
+      rows.push(`<tr class="g"><td colspan="5">${n}. ${esc(g.title)}</td></tr>`);
+      g.rows.forEach(r => rows.push(`<tr><td>${esc(r.name)}${r.unit ? ` <span class="t-unit">· ${esc(r.unit)}</span>` : ''}</td>${r.fixed ? '<td>—</td><td>—</td><td>—</td>' : `<td>${r.h[0]}</td><td>${r.h[1]}</td><td>${r.h[0] + r.h[1]}</td>`}<td>${rub(r.sum)}</td></tr>`));
+      rows.push(`<tr class="st"><td>Итого: ${n}. ${esc(g.title)}</td><td>${t[0]}</td><td>${t[1]}</td><td>${t[0] + t[1]}</td><td>${rub(ts)}</td></tr>`);
+    });
+    const t = hoursSvc(s, v);
+    return { body: rows.join(''), foot: `<tr><th scope="row">Итого: ${esc(s.title.toLowerCase())}</th><td>${t[0]}</td><td>${t[1]}</td><td>${t[0] + t[1]}</td><td>${rub(s.price + extrasCost(s, v))}</td></tr>` };
+  }
+
+  function update(animate) {
+    for (const s of SERVICES) {
+      const st = state[s.id];
+      const sec = document.getElementById('svc-' + s.id);
+      sec.classList.toggle('is-off', !st.on);
+      sec.querySelector('[data-service]').setAttribute('aria-checked', String(st.on));
+      sec.querySelector('.svc-body').hidden = !st.on;
+      sec.querySelector('[data-offnote]').hidden = st.on;
+      for (const a of s.extras) {
+        const row = sec.querySelector(`[data-row="${a.id}"]`), n = st.v[a.id], on = n > 0;
+        row.classList.toggle('is-on', on);
+        const sw = row.querySelector('.switch');
+        if (sw) sw.setAttribute('aria-checked', String(on));
+        if (a.qty) {
+          row.querySelector('[data-qty]').textContent = n;
+          row.querySelector('[data-step="-1"]').setAttribute('aria-disabled', String(n <= 0));
+          row.querySelector('[data-step="1"]').setAttribute('aria-disabled', String(n >= a.qty.max));
+        }
+        const per = a.qty ? ' ' + a.qty.per : '';
+        const h = on ? extraH(a, st.v) : a.h, hh = h[0] + h[1];
+        row.querySelector('[data-price]').textContent = '+' + rub(a.rub ? a.rub * (on ? n : 1) : cost(h)) + (on ? '' : per);
+        row.querySelector('[data-hours]').textContent = a.rub ? (on ? a.qty.label(n) : a.note) : on ? (a.qty ? a.qty.label(n) + ' · ' : '') + hrs(hh) : hrs(hh) + per;
+      }
+      const picked = pickedOf(s, st.v), xp = extrasCost(s, st.v);
+      const tg = sec.querySelector('[data-addons-toggle]');
+      tg.classList.toggle('has-picked', picked.length > 0);
+      const xw = weeksOf(s, st.v) - baseWeeks(s);
+      sec.querySelector('[data-addons-hint]').textContent = picked.length ? `добавлено ${picked.length} · +${rub(xp)}${xw ? ' · ' + plusWeeks(xw) + ' к сроку' : ''}` : `${s.extras.length} на выбор`;
+      const pk = sec.querySelector('[data-picked]');
+      pk.textContent = picked.length ? 'Добавлено: ' + picked.map(a => pickName(a, st.v)).join(', ') : '';
+      pk.hidden = !picked.length || tg.getAttribute('aria-expanded') === 'true';
+      setMoney(sec.querySelector('[data-sub]'), s.price + xp, animate);
+      const sh = hoursSvc(s, st.v);
+      sec.querySelector('[data-meta]').textContent = `${hrs(sh[0] + sh[1])} · ${weeksLabel(weeksOf(s, st.v))}${xw ? ` (${plusWeeks(xw)} на доп. услуги)` : ''} · ${picked.length ? `база ${rub(s.price)} + доп. услуги ${rub(xp)}` : 'без доп. услуг'}`;
+      sec.querySelector('[data-calc-hint]').textContent = `· ${hrs(sh[0] + sh[1])}`;
+      const calc = calcHTML(s, st.v);
+      sec.querySelector('[data-calc-body]').innerHTML = calc.body;
+      sec.querySelector('[data-calc-foot]').innerHTML = calc.foot;
+    }
+
+    const c = compute();
+    const totalH = c.hours[0] + c.hours[1];
+    document.querySelectorAll('[data-total]').forEach(el => setMoney(el, c.total, animate));
+    document.querySelectorAll('[data-old]').forEach(el => { el.textContent = rub(c.sum); });
+    document.querySelectorAll('[data-old-wrap]').forEach(el => { el.hidden = !c.both; });
+    document.querySelector('[data-mbar-label]').textContent = c.both ? 'Итого, со скидкой' : 'Итого';
+    document.querySelectorAll('[data-disc-pill]').forEach(el => { el.textContent = 'экономия ' + rub(c.disc); });
+
+    const lines = [];
+    c.parts.forEach(p => {
+      lines.push(`<li><span>${esc(p.s.title)}</span><span>${rub(p.s.price)}</span></li>`);
+      if (p.picked.length) lines.push(`<li><span>Доп. услуги к ${p.s.id === 'brand' ? 'брендингу' : 'сайту'} · ${p.picked.length}</span><span>+${rub(p.xp)}</span></li>`);
+    });
+    if (c.both) lines.push(`<li class="disc"><span>Скидка за комплекс</span><span>−${rub(c.disc)}</span></li>`);
+    if (!c.parts.length) lines.push('<li><span>Ничего не выбрано</span><span>—</span></li>');
+    document.querySelector('[data-lines]').innerHTML = lines.join('');
+
+    document.querySelector('[data-hours-total]').textContent = totalH
+      ? (sameRate ? `${hrs(totalH)} × ${rub(RATES.d)}/ч = ${rub(cost(c.hours))}${c.fixed ? `, плюс поддержка ${rub(c.fixed)}` : ''}` : `${hrs(totalH)}: по ставке дизайна ${c.hours[0]}, разработки ${c.hours[1]}`)
+      : '—';
+    const phases = c.parts.map(p => `${p.s.short} ${weeksLabel(p.weeks)}`);
+    const weeksText = c.parts.length ? weeksLabel(c.weeks) + (phases.length > 1 ? ` (${phases.join(', затем ')})` : '') : '—';
+    document.querySelector('[data-weeks]').textContent = weeksText;
+    const teamText = c.team.length ? c.team.join(', ').toLowerCase() : '—';
+    document.querySelector('[data-team]').textContent = teamText;
+    document.querySelector('[data-final-meta]').textContent = c.parts.length
+      ? `${hoursWord(totalH)} работы${sameRate ? ' по ставке ' + rub(RATES.d) + '/ч' : ''}. Срок ${weeksText}. Команда: ${teamText}.`
+      : 'Включите брендинг или сайт, чтобы собрать смету.';
+
+    let n = 0;
+    const cards = [];
+    const card = (name, unit, price) => { n += 1; cards.push(`<div class="card"><span class="card-num">${String(n).padStart(2, '0')} /</span><span class="card-name"><span>${esc(name)}</span><span class="card-unit">${esc(unit)}</span></span><span class="card-price">${rub(price)}</span></div>`); };
+    for (const p of c.parts) {
+      card(p.s.title, `базовый состав · ${hrs(p.s.coreH[0] + p.s.coreH[1])}`, p.s.price);
+      for (const a of p.picked) { const h = extraH(a, p.v); card(a.name, a.rub ? a.qty.label(p.v[a.id]) : (a.qty ? a.qty.label(p.v[a.id]) + ' · ' : '') + hrs(h[0] + h[1]), extraCost(a, p.v)); }
+    }
+    document.querySelector('[data-cards]').innerHTML = cards.length ? cards.join('') : '<p class="cards-empty">Здесь появятся выбранные услуги.</p>';
+  }
+
+  function buildText() {
+    const c = compute();
+    const L = ['Смета Flower для DI·ZIO', `Ставка: ${rateText}`, ''];
+    for (const p of c.parts) {
+      L.push(`${p.s.title}: ${rub(p.s.price)}, фиксированная цена (${hrs(p.s.coreH[0] + p.s.coreH[1])})`, 'Что входит:');
+      p.s.core.forEach((it, i) => L.push(`  ${i + 1}. ${it.name}`));
+      if (p.picked.length) {
+        L.push('Дополнительные услуги:');
+        p.picked.forEach(a => { const h = extraH(a, p.v); L.push(`  • ${pickName(a, p.v)}: ${a.rub ? '' : hrs(h[0] + h[1]) + ', '}${rub(extraCost(a, p.v))}`); });
+        L.push(`Итого за ${p.s.short}: ${rub(p.sub)}`);
+      }
+      L.push('');
+    }
+    if (!c.parts.length) L.push('Услуги не выбраны.', '');
+    if (c.both) L.push(`Без скидки: ${rub(c.sum)}`, `Скидка за комплекс: −${rub(c.disc)}`);
+    L.push(`Итого: ${rub(c.total)}`);
+    if (c.parts.length) L.push(`Часы: ${hrs(c.hours[0] + c.hours[1])}`, `Срок: ${weeksLabel(c.weeks)}`);
+    return L.join('\n').replace(/\u00a0/g, ' ');
+  }
+
+  const status = (sel, msg) => document.querySelectorAll(sel).forEach(el => { el.textContent = msg; });
+  function copy(text, sel, okMsg) {
+    const fallback = () => {
+      const ta = document.getElementById('copy-fallback');
+      ta.value = text; ta.hidden = false; ta.focus(); ta.select();
+      status(sel, 'Не получилось скопировать автоматически. Текст выделен ниже, скопируйте его вручную.');
+    };
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(() => status(sel, okMsg), fallback);
+      else fallback();
+    } catch (e) { fallback(); }
+  }
+
+  const svcOf = el => SERVICES.find(s => s.id === el.closest('.svc').dataset.svc);
+  const changed = () => { update(true); save(); status('[data-status]', ''); };
+  const toggleOpen = btn => {
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    document.getElementById(btn.getAttribute('aria-controls')).hidden = !open;
+  };
+
+  root.addEventListener('click', e => {
+    const at = e.target.closest('[data-addons-toggle]');
+    if (at) { toggleOpen(at); update(false); return; }
+    const ct = e.target.closest('[data-calc-toggle]');
+    if (ct) { toggleOpen(ct); return; }
+    const sb = e.target.closest('.step-btn');
+    if (sb) {
+      const s = svcOf(sb), a = s.extras.find(x => x.id === sb.dataset.item), v = state[s.id].v;
+      const n = Math.min(a.qty.max, Math.max(0, v[a.id] + +sb.dataset.step));
+      if (n !== v[a.id]) { v[a.id] = n; changed(); }
+      return;
+    }
+    const sw = e.target.closest('.switch');
+    if (sw) {
+      const s = svcOf(sw);
+      if (sw.dataset.service) state[s.id].on = !state[s.id].on;
+      else { const v = state[s.id].v; v[sw.dataset.item] = v[sw.dataset.item] ? 0 : 1; }
+      changed();
+      return;
+    }
+    const row = e.target.closest('.row-click');
+    if (row && !e.target.closest('input,button,label,a')) {
+      const s = svcOf(row), v = state[s.id].v, id = row.dataset.row;
+      v[id] = v[id] ? 0 : 1;
+      changed();
+    }
+  });
+  document.addEventListener('click', e => {
+    if (e.target.closest('[data-copy]')) copy(buildText(), '[data-status]', 'Скопировано. Перешлите текст в Telegram или на почту.');
+    else if (e.target.closest('[data-reset]')) { state = fresh(); update(true); save(); status('[data-status]', 'Доп. услуги убраны, в смете базовый состав.'); }
+    else if (e.target.closest('[data-copy-mail]')) copy(document.getElementById('mail').textContent, '[data-mail-status]', 'Почта скопирована.');
+  });
+
+  update(false);
+})();
+</script>
+</body>
+</html>
