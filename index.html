@@ -367,7 +367,7 @@ h2{margin:0;font-weight:600;font-size:clamp(28px,3.4vw,40px);letter-spacing:-.02
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const cost = h => h[0] * RATES.d + h[1] * RATES.dev;
   const addH = (a, b) => [a[0] + b[0], a[1] + b[1]];
-  const ROLE_ORDER = ['Арт-директор', 'Стратег', 'Копирайтер', 'Дизайнер', 'Моушн-дизайнер', 'Разработчик'];
+  const ROLE_ORDER = ['Арт-директор', 'Дизайнер', 'Разработчик']; // в блоке «Команда» показываем только эти роли
   const CHEVRON = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const PLUS = '<svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>';
   const BULLET = '<svg viewBox="0 0 29 29" fill="none" aria-hidden="true"><path d="M25.43 14.01l2.6 2.6h-9.69l-2.6-2.6h9.69zM9.69 11.42l2.6 2.6H2.6L0 11.42h9.69zM14.01 25.43l-2.59 2.6v-9.69l2.59-2.6v9.69zM16.61 9.69l-2.6 2.59V2.6L16.61 0v9.69zM20.24 12.28h-3.63l6.92-6.92h3.63l-6.92 6.92zM15.74 20.42v-3.81l6.92 6.92v3.63l-6.92-6.74zM5.36 4.67V1.04l6.92 6.93v3.45L5.36 4.67zM7.79 15.74h3.63l-6.78 6.93H1.04l6.75-6.93zM12.28 14.01l1.73-1.73 1.73 1.73-1.73 1.73-1.73-1.73z" fill="#FFBB00"/></svg>';
